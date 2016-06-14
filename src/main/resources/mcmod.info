@@ -1,0 +1,19 @@
+{
+  "modListVersion": 0,
+  "modList": [{
+    "modid": "Equi3AE",
+    "name": "Equivalent Exchange 3 AE",
+    "description": "EE3 crafting for AE2.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["ultraflash"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "requiredMods": [],
+    "dependencies": ["appliedenergistics2" , "EE3"],
+    "useDependencyInformation": "true"
+  }]
+}
