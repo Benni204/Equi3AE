@@ -11,3 +11,7 @@ gradle
 libs
 .project
 build.gradle
+equi3ae.iml
+equi3ae.ipr
+equi3ae.iws
+out/
