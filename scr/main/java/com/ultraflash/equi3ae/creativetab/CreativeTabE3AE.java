@@ -15,11 +15,5 @@ public class CreativeTabE3AE
         public Item getTabIconItem() {
             return ModItems.distortedSingularity;
         }
-
-        @Override
-        public String getTranslatedTabLabel()
-        {
-            return "Equi3 AE3 Bride";
-        }
     };
 }

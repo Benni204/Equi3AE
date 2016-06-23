@@ -1,6 +1,7 @@
 package com.ultraflash.equi3ae.item;
 
 //import com.ultraflash.equi3ae.creativetab.CreativeTabLMRB;
+import com.ultraflash.equi3ae.creativetab.CreativeTabE3AE;
 import com.ultraflash.equi3ae.reference.Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,7 +14,7 @@ public class ItemE3AE extends Item
     public ItemE3AE()
     {
         super();
-       // this.setCreativeTab(CreativeTabLMRB.LMRB_TAB);
+        this.setCreativeTab(CreativeTabE3AE.E3AE_TAB);
     }
 
     @Override

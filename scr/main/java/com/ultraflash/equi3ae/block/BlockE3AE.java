@@ -1,5 +1,6 @@
 package com.ultraflash.equi3ae.block;
 
+import com.ultraflash.equi3ae.creativetab.CreativeTabE3AE;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -19,6 +20,7 @@ public class BlockE3AE extends Block {
     public BlockE3AE (Material mat)
     {
          super(mat) ;
+        this.setCreativeTab(CreativeTabE3AE.E3AE_TAB);
     }
 
     public BlockE3AE ()

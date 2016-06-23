@@ -1,3 +1,15 @@
+# Items
 item.equi3ae:mapleLeaf.name=Maple Leaf
 item.equi3ae:distortedSingularity.name=Distorted Singularity
+
+# Blocks
 tile.equi3ae:flag.name=Canadian Flag
+tile.equi3ae:emcfilter.name=EMC Filtering Machine
+
+# Tabs
+itemGroup.equi3ae=Equi3 AE Bridge
+
+# KEYS
+keys.equi3ae.category=Equi3AE Key
+keys.equi3ae.charge=Charge
+keys.equi3ae.release=Release
