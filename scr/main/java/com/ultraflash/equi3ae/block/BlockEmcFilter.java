@@ -3,13 +3,20 @@ package com.ultraflash.equi3ae.block;
 import com.ultraflash.equi3ae.handler.GuiHandlerE3AE;
 import com.ultraflash.equi3ae.creativetab.CreativeTabE3AE;
 import com.ultraflash.equi3ae.equi3ae;
+import com.ultraflash.equi3ae.proxy.ClientProxy;
 import com.ultraflash.equi3ae.reference.GUIs;
 import com.ultraflash.equi3ae.reference.Textures;
+import com.ultraflash.equi3ae.tileentity.TileEntityE3AE;
 import com.ultraflash.equi3ae.tileentity.TileEntityEmcFilter;
 import com.ultraflash.equi3ae.utility.LogHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -17,6 +24,10 @@ import net.minecraftforge.common.util.ForgeDirection;
  * Created by Benni on 20.06.2016.
  */
 public class BlockEmcFilter extends BlockTileEntityE3AE {
+
+    @SideOnly(Side.CLIENT)
+    protected IIcon blockIcon, frontIcon;
+    public static int renderId;
 
     public BlockEmcFilter()
     {
@@ -47,7 +58,7 @@ public class BlockEmcFilter extends BlockTileEntityE3AE {
     @Override
     public boolean renderAsNormalBlock()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -59,7 +70,7 @@ public class BlockEmcFilter extends BlockTileEntityE3AE {
     @Override
     public int getRenderType()
     {
-        return 0;
+        return renderId;
     }
 
 
@@ -71,6 +82,68 @@ public class BlockEmcFilter extends BlockTileEntityE3AE {
             player.openGui(equi3ae.instance, GUIs.EMCFILTER.ordinal(), world, x,y, z);
         }
         return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister)
+    {
+        blockIcon = iconRegister.registerIcon(String.format("%s", getUnwrappedUnlocalizedName(this.getUnlocalizedName())));
+        frontIcon = iconRegister.registerIcon(String.format("%s", getUnwrappedUnlocalizedName(this.getUnlocalizedName()) + "_front"));
+    }
+
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int blockSide, int blockMeta) {
+        // This is used to render the block as an item
+
+
+        ForgeDirection forgeDirection = ForgeDirection.getOrientation(blockSide);
+        if (forgeDirection == ForgeDirection.SOUTH )
+        {
+
+                return this.frontIcon;
+
+        }
+
+
+        return this.blockIcon;
+
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide)
+    {
+        // used to render the block in the world
+        TileEntity te = world.getTileEntity(x, y, z);
+        int facing = 3;
+        if(te instanceof TileEntityEmcFilter) {
+            TileEntityEmcFilter me = (TileEntityEmcFilter) te;
+            facing = me.getOrientation().ordinal();
+            if (facing==blockSide )
+            {
+                return this.frontIcon;
+
+            }
+
+        }
+
+        return this.blockIcon;
+
+        /*
+        ForgeDirection forgeDirection = ForgeDirection.getOrientation(side);
+        if (forgeDirection == ForgeDirection.SOUTH )
+        {
+
+                return this.frontIcon;
+
+        }
+
+
+        return this.blockIcon;
+        */
     }
 
 

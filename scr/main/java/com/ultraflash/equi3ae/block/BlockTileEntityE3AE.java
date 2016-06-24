@@ -67,7 +67,7 @@ import java.util.Random;
             if (world.getTileEntity(x, y, z) instanceof TileEntityE3AE)
             {
                 int direction = 0;
-                int facing = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+               int facing = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
                 if (facing == 0)
                 {
