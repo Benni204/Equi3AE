@@ -6,6 +6,7 @@ import com.ultraflash.equi3ae.creativetab.CreativeTabE3AE;
 import com.ultraflash.equi3ae.reference.Reference;
 import com.ultraflash.equi3ae.tileentity.TileEntityE3AE;
 import com.ultraflash.equi3ae.tileentity.TileEntityEmcFilter;
+import com.ultraflash.equi3ae.utility.LogHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -27,6 +28,9 @@ import java.util.Random;
 
     public abstract class BlockTileEntityE3AE extends BlockContainer
     {
+        public ForgeDirection left ;
+        public  ForgeDirection right;
+
         protected BlockTileEntityE3AE(Material material)
         {
             super(material);
@@ -91,7 +95,15 @@ import java.util.Random;
                     ((TileEntityE3AE) world.getTileEntity(x, y, z)).setCustomName(itemStack.getDisplayName());
                 }
 
+
                 ((TileEntityE3AE) world.getTileEntity(x, y, z)).setOrientation(direction);
+
+                ForgeDirection tDir=((TileEntityE3AE) world.getTileEntity(x, y, z)).getOrientation();
+                left= tDir.getRotation(ForgeDirection.UP);
+                right= left.getOpposite();
+
+                LogHelper.info(left+"  "+right);
+
             }
         }
 

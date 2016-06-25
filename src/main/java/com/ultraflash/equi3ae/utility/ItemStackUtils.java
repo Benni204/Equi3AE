@@ -1,5 +1,6 @@
 package com.ultraflash.equi3ae.utility;
 
+import com.pahimar.ee3.reference.Comparators;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryLargeChest;
@@ -7,100 +8,100 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class ItemStackUtils
-{
-    public static ItemStack clone(ItemStack itemStack, int stackSize) {
+public class                  ItemStackUtils
+                        {
+                            public static ItemStack clone(ItemStack itemStack, int stackSize) {
 
-        if (itemStack != null) {
-            ItemStack clonedItemStack = itemStack.copy();
-            clonedItemStack.stackSize = stackSize;
-            return clonedItemStack;
-        }
-        else {
-            return null;
-        }
-    }
+                            if (itemStack != null) {
+                                ItemStack clonedItemStack = itemStack.copy();
+                                clonedItemStack.stackSize = stackSize;
+                                return clonedItemStack;
+                            }
+                            else {
+                                return null;
+                            }
+                        }
 
-    public static int doInsertItem(Object into, ItemStack item, ForgeDirection side) {
-        if (into == null || item == null) {
-            return 0;
-        }
-        if (into instanceof ISidedInventory) {
-            return ItemStackUtils.doInsertItemInv((ISidedInventory) into, item, side, true);
-        } else if (into instanceof IInventory) {
-            return ItemStackUtils.doInsertItemInv(getInventory((IInventory) into), item, side, true);
-        }
-
-
-
-        return 0;
-    }
+                        public static int doInsertItem(Object into, ItemStack item, ForgeDirection side,int throughput) {
+                            if (into == null || item == null) {
+                                return 0;
+                            }
+                            if (into instanceof ISidedInventory) {
+                                return ItemStackUtils.doInsertItemInv((ISidedInventory) into, item, side, true,throughput);
+                            } else if (into instanceof IInventory) {
+                                return ItemStackUtils.doInsertItemInv(getInventory((IInventory) into), item, side, true,throughput);
+                            }
 
 
 
+                            return 0;
+                        }
 
-    public static IInventory getInventory(IInventory inv) {
-        if (inv instanceof TileEntityChest) {
-            TileEntityChest chest = (TileEntityChest) inv;
-            TileEntityChest neighbour = null;
-            boolean reverse = false;
-            if (chest.adjacentChestXNeg != null) {
-                neighbour = chest.adjacentChestXNeg;
-                reverse = true;
-            } else if (chest.adjacentChestXPos != null) {
-                neighbour = chest.adjacentChestXPos;
-            } else if (chest.adjacentChestZNeg != null) {
-                neighbour = chest.adjacentChestZNeg;
-                reverse = true;
-            } else if (chest.adjacentChestZPos != null) {
-                neighbour = chest.adjacentChestZPos;
-            }
-            if (neighbour != null) {
-                if (reverse) {
-                    return new InventoryLargeChest("", neighbour, inv);
-                } else {
-                    return new InventoryLargeChest("", inv, neighbour);
-                }
-            }
-        }
-        return inv;
-    }
 
-    public static int doInsertItem(IInventory inv, int startSlot, int endSlot, ItemStack item) {
-        return doInsertItemInv(inv, null, invSlotter.getInstance(startSlot, endSlot), item, ForgeDirection.UNKNOWN, true);
-    }
 
-    public static int doInsertItem(IInventory inv, int startSlot, int endSlot, ItemStack item, boolean doInsert) {
-        return doInsertItemInv(inv, null, invSlotter.getInstance(startSlot, endSlot), item, ForgeDirection.UNKNOWN, doInsert);
-    }
+
+                        public static IInventory getInventory(IInventory inv) {
+                            if (inv instanceof TileEntityChest) {
+                                TileEntityChest chest = (TileEntityChest) inv;
+                                TileEntityChest neighbour = null;
+                                boolean reverse = false;
+                                if (chest.adjacentChestXNeg != null) {
+                                    neighbour = chest.adjacentChestXNeg;
+                                    reverse = true;
+                                } else if (chest.adjacentChestXPos != null) {
+                                    neighbour = chest.adjacentChestXPos;
+                                } else if (chest.adjacentChestZNeg != null) {
+                                    neighbour = chest.adjacentChestZNeg;
+                                    reverse = true;
+                                } else if (chest.adjacentChestZPos != null) {
+                                    neighbour = chest.adjacentChestZPos;
+                                }
+                                if (neighbour != null) {
+                                    if (reverse) {
+                                        return new InventoryLargeChest("", neighbour, inv);
+                                    } else {
+                                        return new InventoryLargeChest("", inv, neighbour);
+                                    }
+                                }
+                            }
+                            return inv;
+                        }
+
+                        public static int doInsertItem(IInventory inv, int startSlot, int endSlot, ItemStack item,int throughput) {
+                            return doInsertItemInv(inv, null, invSlotter.getInstance(startSlot, endSlot), item, ForgeDirection.UNKNOWN, true,throughput);
+                        }
+
+                        public static int doInsertItem(IInventory inv, int startSlot, int endSlot, ItemStack item, boolean doInsert,int throughput) {
+                            return doInsertItemInv(inv, null, invSlotter.getInstance(startSlot, endSlot), item, ForgeDirection.UNKNOWN, doInsert,throughput);
+                        }
 
   /*
    * Insert items into an IInventory or an ISidedInventory.
    */
-            private static int doInsertItemInv(IInventory inv, ItemStack item, ForgeDirection inventorySide, boolean doInsert) {
-                final ISidedInventory sidedInv = inv instanceof ISidedInventory ? (ISidedInventory) inv : null;
-                ISlotIterator slots;
+                        private static int doInsertItemInv(IInventory inv, ItemStack item, ForgeDirection inventorySide, boolean doInsert,int throughput) {
+                            final ISidedInventory sidedInv = inv instanceof ISidedInventory ? (ISidedInventory) inv : null;
+                            ISlotIterator slots;
 
-                if (sidedInv != null) {
-                    if (inventorySide == null) {
-                        inventorySide = ForgeDirection.UNKNOWN;
-                    }
+                            if (sidedInv != null) {
+                                if (inventorySide == null) {
+                                    inventorySide = ForgeDirection.UNKNOWN;
+                                }
                     // Note: This is not thread-safe. Change to getInstance() to constructor when needed (1.8++?).
                     slots = sidedSlotter.getInstance(sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal()));
                 } else {
                     slots = invSlotter.getInstance(0, inv.getSizeInventory());
                 }
 
-                return doInsertItemInv(inv, sidedInv, slots, item, inventorySide, doInsert);
+                return doInsertItemInv(inv, sidedInv, slots, item, inventorySide, doInsert, throughput);
             }
 
 
     private static int doInsertItemInv(IInventory inv, ISidedInventory sidedInv, ISlotIterator slots, ItemStack item, ForgeDirection inventorySide,
-                                       boolean doInsert)
+                                       boolean doInsert,int throughput)
     {
         int numInserted = 0;
         int numitems=2;
-        int numToInsert=item.stackSize;
+        int numToInsert= throughput;
         int firstFreeSlot = -1;
 
 /*
@@ -233,9 +234,6 @@ public class ItemStackUtils
         return ItemStack.areItemStackTagsEqual(s1, s2);
     }
 
-/*
-
-
 
     public static boolean equals(ItemStack first, ItemStack second) {
         return (Comparators.ID_COMPARATOR.compare(first, second) == 0);
@@ -248,7 +246,7 @@ public class ItemStackUtils
     public static int compare(ItemStack itemStack1, ItemStack itemStack2) {
         return Comparators.ID_COMPARATOR.compare(itemStack1, itemStack2);
     }
-*/
+
 
 }
 

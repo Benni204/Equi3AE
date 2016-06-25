@@ -1,4 +1,5 @@
 package com.ultraflash.equi3ae.tileentity;
+import com.pahimar.ee3.api.exchange.EnergyValueRegistryProxy;
 import com.ultraflash.equi3ae.block.BlockTileEntityE3AE;
 import com.ultraflash.equi3ae.init.ModBlocks;
 import com.ultraflash.equi3ae.reference.Names;
@@ -23,7 +24,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraft.block.Block;
-//import com.pahimar.ee3.api.exchange.EnergyValue;
+import com.pahimar.ee3.api.exchange.EnergyValue;
 
 
 
@@ -31,6 +32,9 @@ import net.minecraft.block.Block;
 public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInventory
 {
     public short facing;
+    public static ForgeDirection left ;
+    public static ForgeDirection right;
+
     private ItemStack[] inventory;
     private int maxUpgrade=1;
 
@@ -251,7 +255,7 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
     public void updateEntity()
     {
         // if(ForgeDirection.WEST.ordinal)
-        if(doWorkThisTick(5)) {
+        if(doWorkThisTick(10)) {
             doSideCheck();
         }
     }
@@ -265,18 +269,33 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
 
     protected boolean doSideCheck()
     {
-        CoordHelper loc =getLocation().getLocation(ForgeDirection.WEST);
+        ForgeDirection tDir= this.getOrientation();
+        left= tDir.getRotation(ForgeDirection.UP);
+        right= left.getOpposite();
+
+
+        CoordHelper loc =getLocation().getLocation(left);
         TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
-        doPush(te);
+        CoordHelper loc2 =getLocation().getLocation(right);
+        TileEntity te2 = worldObj.getTileEntity(loc2.x, loc2.y, loc2.z);
+
+        LogHelper.info(left+"  "+right);
+        doPush(left ,right, te,te2);
+        //doPush(right,te,true);
 
         return true;
     }
 
 
-    protected boolean doPush(TileEntity te)
+    protected boolean doPush(ForgeDirection dir ,ForgeDirection dir2 ,TileEntity te ,TileEntity te2)
     {
         int maxThroughput = 2^maxUpgrade;
         int oldVal=0;
+        int oldF=facing;
+       // ForgeDirection tDir=te.getOrientation();
+        //ForgeDirection tleft= tDir.getRotation(ForgeDirection.UP);
+        //ForgeDirection tright= tleft.getOpposite();
+
 
         for (int i = 0 ;i <= INPUT.length-1; i++)
         {
@@ -284,10 +303,17 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
             if(item != null)
             {
                 oldVal=item.stackSize;
-                item.stackSize= Math.min( item.stackSize ,maxThroughput);
+               int throughput= Math.min( item.stackSize ,maxThroughput);
+                int num=0;
+                boolean hEMC= EnergyValueRegistryProxy.hasEnergyValue(item);
 
+              if(hEMC)
+              {
+                 num = ItemStackUtils.doInsertItem(te, item,dir,throughput);
+              }else{
+                  num = ItemStackUtils.doInsertItem(te2, item, dir2,throughput);
+              }
 
-                int num = ItemStackUtils.doInsertItem(te, item, ForgeDirection.WEST);
 
 
                 if(num > 0) {
@@ -309,7 +335,7 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
 
 
     public ForgeDirection getFacingDir() {
-        return ForgeDirection.getOrientation(facing);
+        return ForgeDirection.getOrientation(facing+2);
     }
 
     private final int checkOffset = (int) (Math.random() * 20);

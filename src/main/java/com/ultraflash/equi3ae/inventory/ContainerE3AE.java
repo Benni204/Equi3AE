@@ -38,7 +38,7 @@ public class ContainerE3AE extends Container
                 slot = (Slot) this.inventorySlots.get(currentSlotIndex);
                 stackInSlot = slot.getStack();
 
-                if (slot.isItemValid(itemStack))// && ItemStackUtils.equalsIgnoreStackSize(itemStack, stackInSlot))
+                if (slot.isItemValid(itemStack)&& ItemStackUtils.equalsIgnoreStackSize(itemStack, stackInSlot))
                 {
                     int combinedStackSize = stackInSlot.stackSize + itemStack.stackSize;
                     int slotStackSizeLimit = Math.min(stackInSlot.getMaxStackSize(), slot.getSlotStackLimit());
