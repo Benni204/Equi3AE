@@ -32,8 +32,7 @@ import com.pahimar.ee3.api.exchange.EnergyValue;
 public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInventory
 {
     public short facing;
-    public static ForgeDirection left ;
-    public static ForgeDirection right;
+
 
     private ItemStack[] inventory;
     private int maxUpgrade=1;
@@ -71,6 +70,8 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
         {
             return INPUT;
         }
+
+        /*
         if(side==  ForgeDirection.WEST.ordinal())
         {
             return new int[]{OUTPUT_LEFT_INVENTORY_INDEX };
@@ -79,7 +80,7 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
         {
             return new int[]{OUTPUT_RIGHT_INVENTORY_INDEX};
         }
-
+*/
         return null;
     }
 
@@ -103,7 +104,7 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
 
     @Override
     public ItemStack getStackInSlot(int slotIndex) {
-        LogHelper.info("Slot-Index "+ slotIndex);
+        //LogHelper.info("Slot-Index "+ slotIndex);
         return inventory[slotIndex];
     }
 
@@ -161,7 +162,7 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
 
     @Override
     public String getInventoryName() {
-        return "emcFilter";
+        return "EMC-Filter";
     }
 
     @Override
@@ -183,7 +184,7 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
     public void openInventory() {
         ++numUsingPlayers;
         worldObj.addBlockEvent(xCoord, yCoord, zCoord, ModBlocks.emcfilter, 1, numUsingPlayers);
-        LogHelper.info("Ivnertory Opened");
+       // LogHelper.info("Ivnertory Opened");
     }
 
     @Override
@@ -269,17 +270,18 @@ public class TileEntityEmcFilter extends TileEntityE3AE implements ISidedInvento
 
     protected boolean doSideCheck()
     {
-        ForgeDirection tDir= this.getOrientation();
-        left= tDir.getRotation(ForgeDirection.UP);
-        right= left.getOpposite();
+       // ForgeDirection tDir= this.getOrientation();
+        //left= tDir.getRotation(ForgeDirection.UP);
+        //right= left.getOpposite();
 
+        if(left ==null || right==null){return  false;}
 
         CoordHelper loc =getLocation().getLocation(left);
         TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
         CoordHelper loc2 =getLocation().getLocation(right);
         TileEntity te2 = worldObj.getTileEntity(loc2.x, loc2.y, loc2.z);
 
-        LogHelper.info(left+"  "+right);
+      // LogHelper.info(left+"  "+right);
         doPush(left ,right, te,te2);
         //doPush(right,te,true);
 

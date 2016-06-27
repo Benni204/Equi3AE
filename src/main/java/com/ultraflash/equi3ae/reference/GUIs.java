@@ -5,6 +5,7 @@ package com.ultraflash.equi3ae.reference;
  */
 public enum GUIs
 {
-    EMCFILTER
+    EMCFILTER,
+    EMCCONVERTER
 
 }

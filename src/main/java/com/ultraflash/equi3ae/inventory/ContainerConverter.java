@@ -1,33 +1,37 @@
 package com.ultraflash.equi3ae.inventory;
 
-import com.ultraflash.equi3ae.equi3ae;
+import com.pahimar.ee3.api.exchange.EnergyValueRegistryProxy;
 import com.ultraflash.equi3ae.init.ModItems;
+import com.ultraflash.equi3ae.tileentity.TileEntityEmcConverter;
 import com.ultraflash.equi3ae.tileentity.TileEntityEmcFilter;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
-
+ * Created by Benni on 25.06.2016.
  */
-public class ContainerEmcFilter extends ContainerE3AE
+public class ContainerConverter extends ContainerE3AE
 {
 
-    private TileEntityEmcFilter te;
+    private TileEntityEmcConverter te;
+    protected Slot[] upgradeSlot={null,null,null};
 
-    protected Slot upgradeSlot;
+
+    private int xUp=160;
+    private int yUp=17;
 
 
-    public ContainerEmcFilter(IInventory playerInv, TileEntityEmcFilter te)
+    public ContainerConverter(IInventory playerInv, TileEntityEmcConverter te)
     {
         this.te = te;
+        //upgradeSlot
 
-        //upggrade slot
 
-        upgradeSlot = new Slot(te, 8, 24,25) {
-
+        //Define UpgradeSLots
+        upgradeSlot[0] = new Slot(te, 3, xUp,yUp)
+        {
             @Override
             public int getSlotStackLimit() {
                 return 1;
@@ -36,19 +40,57 @@ public class ContainerEmcFilter extends ContainerE3AE
             @Override
             public final boolean isItemValid( ItemStack itemstack) {
 
-                    return itemstack != null && itemstack.getItem() == ModItems.mapleLeaf;
+                return itemstack != null && itemstack.getItem() == ModItems.mapleLeaf;
             }
 
+        };
+        upgradeSlot[1] = new Slot(te, 4, xUp,yUp*2)
+        {
+            @Override
+            public int getSlotStackLimit() {
+                return 1;
+            }
+
+            @Override
+            public final boolean isItemValid( ItemStack itemstack) {
+
+                return itemstack != null && itemstack.getItem() == ModItems.mapleLeaf;
+            }
 
         };
-        addSlotToContainer(upgradeSlot);
+        upgradeSlot[2] = new Slot(te, 5, xUp,yUp*3)
+        {
+            @Override
+            public int getSlotStackLimit() {
+                return 1;
+            }
 
-            // Tile Entity, Slot 0-8, Slot IDs 0-8
-        for (int y = 0; y < 2; ++y) {
+            @Override
+            public final boolean isItemValid( ItemStack itemstack) {
+
+                return itemstack != null && itemstack.getItem() == ModItems.mapleLeaf;
+            }
+
+        };
+
+        addSlotToContainer(upgradeSlot[0]);
+        addSlotToContainer(upgradeSlot[1]);
+        addSlotToContainer(upgradeSlot[2]);
+
+
+
+        // Tile Entity, Slot 0-8, Slot IDs 0-8
+        for (int y = 0; y < 1; ++y) {
             for (int x = 0; x < 3; ++x) {
+                this.addSlotToContainer(new Slot(te, x + y * 3, 62 + x * 18, 17 + y * 18)
+                {
+                    @Override
+                    public final boolean isItemValid( ItemStack itemstack) {
 
+                        return itemstack != null &&  EnergyValueRegistryProxy.hasEnergyValue(itemstack);
+                    }
 
-                this.addSlotToContainer(new Slot(te, x + y * 3, 62 + x * 18, 17 + y * 18));
+                });
             }
         }
 
@@ -65,18 +107,13 @@ public class ContainerEmcFilter extends ContainerE3AE
         }
 
 
-/*
- * SLOTS:
- *
- * Tile Entity 0-8 ........ 0  - 8
- * Player Inventory 9-35 .. 9  - 35
- * Player Inventory 0-8 ... 36 - 44
- */
+
+
 
     }
 
-    public Slot getUpgradeSlot() {
-        return upgradeSlot;
+    public Slot getUpgradeSlot(int index) {
+        return upgradeSlot[index];
     }
 
     @Override
@@ -95,13 +132,13 @@ public class ContainerEmcFilter extends ContainerE3AE
             previous = current.copy();
 
             //Behavior
-            if (fromSlot < 6) {
+            if (fromSlot < 3) {
                 // From TE Inventory to Player Inventory
                 if (!this.mergeItemStack(current, 9, 35, true))
                     return null;
             } else {
                 // From Player Inventory to TE Inventory
-                if (!this.mergeItemStack(current, 0, 6, false))
+                if (!this.mergeItemStack(current, 0, 2, false))
                     return null;
             }
 
@@ -118,9 +155,6 @@ public class ContainerEmcFilter extends ContainerE3AE
         return previous;
 
     }
-
-
-
 
 
 

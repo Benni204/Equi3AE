@@ -1,12 +1,10 @@
 package com.ultraflash.equi3ae.block;
 
-import com.ultraflash.equi3ae.handler.GuiHandlerE3AE;
+import appeng.api.AEApi;
 import com.ultraflash.equi3ae.creativetab.CreativeTabE3AE;
 import com.ultraflash.equi3ae.equi3ae;
-import com.ultraflash.equi3ae.proxy.ClientProxy;
 import com.ultraflash.equi3ae.reference.GUIs;
-import com.ultraflash.equi3ae.reference.Textures;
-import com.ultraflash.equi3ae.tileentity.TileEntityE3AE;
+import com.ultraflash.equi3ae.tileentity.TileEntityEmcConverter;
 import com.ultraflash.equi3ae.tileentity.TileEntityEmcFilter;
 import com.ultraflash.equi3ae.utility.LogHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -21,21 +19,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Created by Benni on 20.06.2016.
+
  */
-public class BlockEmcFilter extends BlockTileEntityE3AE {
+public class BlockEmcConverter extends BlockTileEntityE3AE {
 
     @SideOnly(Side.CLIENT)
     protected IIcon blockIcon, frontIcon;
     public static int renderId;
 
-    public BlockEmcFilter()
+    public BlockEmcConverter()
     {
         super(Material.iron);
         this.setHardness(1.5f);
         this.setResistance(6.0f);
-        this.setBlockName("emcfilter");
-        this.setBlockTextureName("emcfilter");
+        this.setBlockName("emcconverter");
+        this.setBlockTextureName("emcconverter");
         this.setCreativeTab(CreativeTabE3AE.E3AE_TAB);
     }
 
@@ -44,7 +42,8 @@ public class BlockEmcFilter extends BlockTileEntityE3AE {
     public TileEntity createNewTileEntity(World world, int metaData)
     {
 
-            return new TileEntityEmcFilter();
+
+            return new TileEntityEmcConverter();
 
     }
 
@@ -77,9 +76,13 @@ public class BlockEmcFilter extends BlockTileEntityE3AE {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
+        TileEntityEmcConverter te =(TileEntityEmcConverter) world.getTileEntity(x, y, z);
+
+
         if (!world.isRemote) {
-            //LogHelper.info("Open Gui");
-            player.openGui(equi3ae.instance, GUIs.EMCFILTER.ordinal(), world, x,y, z);
+
+          LogHelper.info("I"+te.getinternalEMC()+" S"+te.storedEMC);
+            player.openGui(equi3ae.instance, GUIs.EMCCONVERTER.ordinal(), world, x,y, z);
         }
         return true;
     }
@@ -119,8 +122,8 @@ public class BlockEmcFilter extends BlockTileEntityE3AE {
         // used to render the block in the world
         TileEntity te = world.getTileEntity(x, y, z);
         int facing = 3;
-        if(te instanceof TileEntityEmcFilter) {
-            TileEntityEmcFilter me = (TileEntityEmcFilter) te;
+        if(te instanceof TileEntityEmcConverter) {
+            TileEntityEmcConverter me = (TileEntityEmcConverter) te;
             facing = me.getOrientation().ordinal();
             if (facing==blockSide )
             {

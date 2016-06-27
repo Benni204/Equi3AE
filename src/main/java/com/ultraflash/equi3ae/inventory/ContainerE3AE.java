@@ -8,7 +8,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
- * Created by Benni on 23.06.2016.
+  Migrated from Pahimar
  */
 public class ContainerE3AE extends Container
 {

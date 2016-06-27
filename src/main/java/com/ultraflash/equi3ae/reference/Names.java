@@ -27,7 +27,15 @@ public final class Names
     public static final class Blocks
     {
         public static final String EMCFILTER = "emcfilter";
+        public static final String EMCCONVERTER= "emcconverter";
     }
+
+    public static final class Items
+    {
+        public static final String EMCSTORAGECELL = "emcstoragecell";
+
+    }
+
 
     public static final class Containers
     {

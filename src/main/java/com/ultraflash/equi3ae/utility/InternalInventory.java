@@ -27,6 +27,7 @@ public class InternalInventory implements IInventory {
 
     @Override
     public ItemStack getStackInSlot(final int index) {
+        if(index>=this.getSizeInventory()){return  null;}
         return slots[index];
     }
 

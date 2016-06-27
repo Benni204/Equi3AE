@@ -6,6 +6,7 @@ import com.ultraflash.equi3ae.creativetab.CreativeTabE3AE;
 import com.ultraflash.equi3ae.reference.Reference;
 import com.ultraflash.equi3ae.tileentity.TileEntityE3AE;
 import com.ultraflash.equi3ae.tileentity.TileEntityEmcFilter;
+import com.ultraflash.equi3ae.tileentity.TileEntityNetworkE3AE;
 import com.ultraflash.equi3ae.utility.LogHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,8 +29,6 @@ import java.util.Random;
 
     public abstract class BlockTileEntityE3AE extends BlockContainer
     {
-        public ForgeDirection left ;
-        public  ForgeDirection right;
 
         protected BlockTileEntityE3AE(Material material)
         {
@@ -68,7 +67,7 @@ import java.util.Random;
         public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
         {
             super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
-            if (world.getTileEntity(x, y, z) instanceof TileEntityE3AE)
+            if (world.getTileEntity(x, y, z) instanceof TileEntityE3AE || world.getTileEntity(x, y, z) instanceof TileEntityNetworkE3AE)
             {
                 int direction = 0;
                int facing = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
@@ -90,21 +89,28 @@ import java.util.Random;
                     direction = ForgeDirection.WEST.ordinal();
                 }
 
-                if (itemStack.hasDisplayName())
+
+                if(world.getTileEntity(x, y, z) instanceof TileEntityE3AE ) {
+                    if (itemStack.hasDisplayName()) {
+                        ((TileEntityE3AE) world.getTileEntity(x, y, z)).setCustomName(itemStack.getDisplayName());
+                    }
+
+
+                    ((TileEntityE3AE) world.getTileEntity(x, y, z)).setOrientation(direction);
+                }else
                 {
-                    ((TileEntityE3AE) world.getTileEntity(x, y, z)).setCustomName(itemStack.getDisplayName());
+                    if (itemStack.hasDisplayName()) {
+                        ((TileEntityNetworkE3AE) world.getTileEntity(x, y, z)).setCustomName(itemStack.getDisplayName());
+                    }
+
+
+                    ((TileEntityNetworkE3AE) world.getTileEntity(x, y, z)).setOrientation(direction);
                 }
 
-
-                ((TileEntityE3AE) world.getTileEntity(x, y, z)).setOrientation(direction);
-
-                ForgeDirection tDir=((TileEntityE3AE) world.getTileEntity(x, y, z)).getOrientation();
-                left= tDir.getRotation(ForgeDirection.UP);
-                right= left.getOpposite();
-
-                LogHelper.info(left+"  "+right);
-
+               // LogHelper.info(left+"  "+right);
             }
+
+
         }
 
         @Override

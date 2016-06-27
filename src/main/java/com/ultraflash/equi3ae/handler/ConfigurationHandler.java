@@ -13,6 +13,9 @@ public class ConfigurationHandler
 {
 	public static Configuration configuration;
 	public static boolean testValue =false;
+	public static double powerConverterIdle;
+	public static double powerConverterActive;
+	public static double emcPerTick;
 	
  public static void init(File configFile)
  {
@@ -29,6 +32,9 @@ public class ConfigurationHandler
  private static void loadConfiguration()
  {
 	 testValue = configuration.get(Configuration.CATEGORY_GENERAL, "testValue",false,"Example Value").getBoolean(true);
+	 powerConverterIdle =  configuration.get("PowerUsage", "PowerDrain_IDLE", 0.0).getDouble(0.0);
+	 powerConverterActive =  configuration.get("PowerUsage", "PowerDrain_perEMC", 0.025).getDouble(0.025);
+	 emcPerTick =  configuration.get("EMC", "emcPerTick", 2).getDouble(2);
 	 
 	 if(configuration.hasChanged())
 	 {

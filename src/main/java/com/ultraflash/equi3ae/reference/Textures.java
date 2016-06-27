@@ -26,7 +26,7 @@ public class Textures {
     {
         protected static final String CONTAINER_TEXTURE_LOCATION = GUI_TEXTURE_LOCATION + "container/";
         public static final ResourceLocation EMC_FILTER = ResourceLocationHelper.getResourceLocation(CONTAINER_TEXTURE_LOCATION + "emcfilter.png");
-
+        public static final ResourceLocation EMC_CONVERTER = ResourceLocationHelper.getResourceLocation(CONTAINER_TEXTURE_LOCATION + "emcconverter.png");
     }
 
 }

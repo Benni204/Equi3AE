@@ -13,3 +13,8 @@ itemGroup.equi3ae=Equi3 AE Bridge
 keys.equi3ae.category=Equi3AE Key
 keys.equi3ae.charge=Charge
 keys.equi3ae.release=Release
+
+#ToolTips
+equi3ae.tooltip.storage.emc.types=%s von %s Item-Typen verwendet.
+equi3ae.tooltip.storage.emc.bytes=%s von %s Item-Bytes verwendet.
+equi3ae.tooltip.storage.emc.content=Enthält %s Items.

@@ -14,6 +14,9 @@ import net.minecraftforge.common.util.ForgeDirection;
         protected ForgeDirection orientation;
         protected byte state;
         protected String customName;
+
+        protected   ForgeDirection left ;
+        protected  ForgeDirection right;
         //protected UUID ownerUUID;
 
         public TileEntityE3AE()
@@ -37,6 +40,13 @@ import net.minecraftforge.common.util.ForgeDirection;
         public void setOrientation(int orientation)
         {
             this.orientation = ForgeDirection.getOrientation(orientation);
+            setRightLeft();
+        }
+
+        public void setRightLeft()
+        {
+            this.left =  this.orientation.getRotation(ForgeDirection.UP);;
+            this.right = left.getOpposite();
         }
 
         public short getState()
