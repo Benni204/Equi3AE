@@ -79,7 +79,7 @@ public class BlockEmcFilter extends BlockTileEntityE3AE {
     {
         if (!world.isRemote) {
             //LogHelper.info("Open Gui");
-            player.openGui(equi3ae.instance, GUIs.EMCFILTER.ordinal(), world, x,y, z);
+            player.openGui(equi3ae.instance,GuiHandlerE3AE.EMC_FILTER+7, world, x,y, z);
         }
         return true;
     }

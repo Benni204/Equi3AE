@@ -1,6 +1,11 @@
 package com.ultraflash.equi3ae.tileentity;
+import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.ICellContainer;
+import appeng.api.storage.ICellProvider;
+import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEMonitor;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
 import appeng.tile.inventory.InvOperation;
@@ -278,13 +283,34 @@ public class TileEntityEmcConverter extends TileEntityNetworkE3AE
                 internalEMC=0.0f;
                 lastEmc=0.0f;
                 setEmcState(false);
+
                 return;
             }else{
                 //Buffer is full
                 internalEMC= internalEMC -(maxstoredEMC-storedEMC);
                 storedEMC=maxstoredEMC;
-            }
 
+                try	{
+                IAEItemStack crystal = AEApi.instance().storage().createItemStack(new ItemStack(ModItems.rawemc,(int) storedEMC));
+                IStorageGrid storageGrid = this.getProxy().getStorage();
+
+                  //  IMEInventory
+
+                    IMEMonitor<IAEItemStack> ItemInventory =storageGrid.getItemInventory();
+                    IAEItemStack rejected =ItemInventory.injectItems(crystal, Actionable.SIMULATE, this.thisSource);
+
+                    if(rejected == null || rejected.getStackSize() == 0)
+                    {
+                        ItemInventory.injectItems(crystal, Actionable.MODULATE, this.thisSource);
+                        storedEMC=0;
+
+                    }
+
+
+                } catch(GridAccessException e) {}
+
+            }
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }else{
            // internalEMC+= addEmc;
             setEmcToProc(emc-addEmc);

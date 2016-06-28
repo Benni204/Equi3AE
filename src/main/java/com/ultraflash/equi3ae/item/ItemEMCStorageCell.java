@@ -96,7 +96,6 @@ public class ItemEMCStorageCell extends ItemE3AE implements IEmcStorageCell, IIt
     public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean moreInfo)
     {
         IMEInventoryHandler inventory = AEApi.instance().registries().cell().getCellInventory(stack, (ISaveProvider)null, StorageChannel.ITEMS);
-
         if(inventory instanceof ICellInventoryHandler)
         {
             ICellInventoryHandler handler = (ICellInventoryHandler) inventory;
@@ -203,7 +202,7 @@ public class ItemEMCStorageCell extends ItemE3AE implements IEmcStorageCell, IIt
 
 
     public boolean isEditable(ItemStack is) {
-        return false;
+        return true;
     }
 
     public IInventory getUpgradesInventory(ItemStack is) {
@@ -211,7 +210,20 @@ public class ItemEMCStorageCell extends ItemE3AE implements IEmcStorageCell, IIt
     }
 
     public IInventory getConfigInventory(ItemStack is) {
-        return new CellConfig(is);
+        return new CellConfig(is)
+        {
+            @Override
+            public void setEnableClientEvents(boolean enableClientEvents) {
+                super.setEnableClientEvents(false);
+            }
+
+            @Override
+            public ItemStack getStackInSlot(int var1) {
+                return null;
+
+
+        }
+        };
     }
 
     public FuzzyMode getFuzzyMode(ItemStack is) {

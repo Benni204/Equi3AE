@@ -28,6 +28,7 @@ public final class Names
     {
         public static final String EMCFILTER = "emcfilter";
         public static final String EMCCONVERTER= "emcconverter";
+        public static final String  EMCSTORAGEBASE="emcstoragebase";
     }
 
     public static final class Items
